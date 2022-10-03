@@ -1,0 +1,117 @@
+.bg {
+
+    font-family: 'Philosopher', sans-serif;
+
+}
+
+.title {
+    padding-top: 20px;
+    text-align: center;
+    font-size: 60px;
+    font-weight: 500;
+    color: #af8c3c;
+    font-family: 'Pinyon Script', cursive;
+    text-transform: capitalize;
+    padding-bottom: 10px;
+
+}
+
+.body_content {
+    background: #fdf0e2;
+}
+
+
+
+.title-1 {
+    padding-bottom: 10px;
+    color: #af8c3c;
+    padding-left: 10px;
+    font-size: 20px;
+}
+
+.images {
+    padding: 20 50px;
+}
+
+.img_title {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.img_title:hover {
+    color: blue;
+    cursor: pointer;
+    background-color: White;
+    /* border: 1px solid black; */
+}
+
+.flex {
+    display: flex;
+    align-self: center;
+    margin-bottom: 30px;
+    row-gap: 25px;
+}
+
+.content {
+    text-align: center;
+}
+
+
+.form-select:focus {
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: none;
+    border: none;
+}
+
+.total-records {
+    color: #af8c3c;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+}
+
+.total-records span {
+    font-weight: 600;
+}
+
+.left_nav {
+    padding: 20px;
+}
+
+.filter_title {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.filter_list {
+    list-style: none;
+}
+
+li {
+    list-style: none;
+}
+
+.filter_list li {
+    padding-left: -20px;
+}
+
+.filter_list li>.filter_btn {
+    text-decoration: none;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #000;
+    letter-spacing: 1px;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    width: 240px;
+    text-align: start;
+
+}
+
+.filter_data {
+    padding: 0 0 30px 35px;
+}

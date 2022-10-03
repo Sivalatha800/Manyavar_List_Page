@@ -1,0 +1,5 @@
+<div *ngIf="filter.key != 'price'">
+  <div *ngFor="let data of getKeyValuePair(filter.value)">
+    {{ data.value.Title }} {{ data.value.Count }}
+  </div>
+</div>
