@@ -8,7 +8,7 @@ import { submitData } from './list/apiUrl';
 })
 export class ListService {
   token: string =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJlY2M2ZWE5OC00MDY0LTRiYTEtYjFlNS1jMGI1MDJmYzg4NmEiLCJhaWQiOiJDQUQ1MDU5MC1BMTg5LTQxNEYtQTJGNS0xMDMzOUQxRjlGOTciLCJkaWQiOiI0NDQ5NkIwMy0zNjQ3LTQ5MEMtQjJGMC0yRTE1OUIyN0QyNzgiLCJuYmYiOjE2NjQ3NzIyMzQsImV4cCI6MTY2NDg1ODYzNCwiaWF0IjoxNjY0NzcyMjM0fQ.I2fAL0dmM8kXc_ALLotZ5otdM9QLFL0GZ94LRT7fvPU';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJmYTM0M2VjNi1mOWJmLTQ5NzItYWI2MS01MDI0OWQ5ZGZiMjkiLCJhaWQiOiJDQUQ1MDU5MC1BMTg5LTQxNEYtQTJGNS0xMDMzOUQxRjlGOTciLCJkaWQiOiI0NDQ5NkIwMy0zNjQ3LTQ5MEMtQjJGMC0yRTE1OUIyN0QyNzgiLCJuYmYiOjE2NjQ4NTc4MjYsImV4cCI6MTY2NDk0NDIyNiwiaWF0IjoxNjY0ODU3ODI2fQ.GMdRf3FCiVypDgwWalrMiu7Cx_PXudGc_HL6RT8uNtI';
 
   constructor(private http: HttpClient) {}
 
@@ -63,19 +63,19 @@ export class ListService {
     this.queryParams.pno = this.pageNo + 1;
     this.queryParams.ps = this.pageSize;
 
-    if (this.selectedShortOption == 'price asc') {
-      this.queryParams.by = 'price';
-      this.queryParams.dir = 'asc';
-    } else if (this.selectedShortOption == 'price desc') {
-      this.queryParams.by = 'price';
-      this.queryParams.dir = 'desc';
-    } else if (this.selectedShortOption == 'new arrival') {
-      this.queryParams.by = 'new arrival';
-      this.queryParams.dir = '';
-    } else {
-      this.queryParams.by = 'popular';
-      this.queryParams.dir = '';
-    }
+    // if (this.selectedShortOption == 'price asc') {
+    //   this.queryParams.by = 'price';
+    //   this.queryParams.dir = 'asc';
+    // } else if (this.selectedShortOption == 'price desc') {
+    //   this.queryParams.by = 'price';
+    //   this.queryParams.dir = 'desc';
+    // } else if (this.selectedShortOption == 'new arrival') {
+    //   this.queryParams.by = 'new arrival';
+    //   this.queryParams.dir = '';
+    // } else {
+    //   this.queryParams.by = 'popular';
+    //   this.queryParams.dir = '';
+    // }
 
     this.pageNo = this.queryParams.pno;
 
@@ -88,6 +88,7 @@ export class ListService {
       );
   }
 
+  // Sort Options
   sortOptions() {
     this.queryParams.cat2 = this.parem1;
     this.queryParams.cat3 = this.parem2;
@@ -106,6 +107,28 @@ export class ListService {
     }
 
     this.pageNo = this.queryParams.pno;
+    return this.http
+      .get(submitData, { headers: this.tokenHeaders, params: this.queryParams })
+      .pipe(
+        map((data: any) => {
+          return data;
+        })
+      );
+  }
+
+  list: any[] = [];
+  url = '';
+  filterOptions() {
+    this.queryParams.cat2 = this.parem1;
+    this.queryParams.cat3 = this.parem2;
+    this.queryParams.pno = this.pageNo;
+    this.queryParams.ps = this.pageSize;
+
+    if ((this.list.length = 1)) {
+      this.url = this.list[0].displayName + '=' + this.list[0].urlName;
+    }
+
+    this.queryParams.f = this.url;
     return this.http
       .get(submitData, { headers: this.tokenHeaders, params: this.queryParams })
       .pipe(

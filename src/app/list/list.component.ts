@@ -35,16 +35,16 @@ export class ListComponent implements OnInit {
     });
   }
 
+  //Converting Object to Array
   getKeyValuePair(items: any) {
     let keys = [];
     for (let key in items) {
       keys.push({ key: key, value: items[key] });
     }
-
-    console.log(keys);
     return keys;
   }
 
+  // Scroll functionality
   throttle = 500;
   scrollDistance = 1;
   scrollUpDistance = 1;
@@ -61,6 +61,7 @@ export class ListComponent implements OnInit {
     }
   }
 
+  //Sort functionality
   shortOptions(event: any) {
     this.listService.selectedShortOption = event.target.value;
     if (event.target.value == 'popular') {
@@ -69,12 +70,27 @@ export class ListComponent implements OnInit {
       this.listService.sortOptions().subscribe((res) => {
         this.productsList = res.Data.ProductsDetails;
         this.title = res.Data.ProductsDetails[0].ItemListName;
-        let fecets = res.Data.Facets;
+        this.facets = res.Data.Facets;
         this.totalRecords = res.Data.TotalRecords;
       });
     }
   }
-  expanBtn() {
-    document.getElementById('filter_content')?.classList.toggle('show');
+
+  //get value from
+  getVal(event: any, displayName: any) {
+    const selectedList = {
+      displayName: displayName,
+
+      urlName: event.target.value,
+    };
+    this.listService.list.push(selectedList);
+
+    this.listService.filterOptions().subscribe((res) => {
+      this.productsList = res.Data.ProductsDetails;
+      this.title = res.Data.ProductsDetails[0].ItemListName;
+      this.facets = res.Data.Facets;
+      this.totalRecords = res.Data.TotalRecords;
+    });
+    this.listService.list = [];
   }
 }

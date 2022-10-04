@@ -35,33 +35,45 @@
           <div *ngFor="let filter of getKeyValuePair(facets)">
             <ul class="filter_list">
               <li class="d-flex">
-                <button class="filter_btn" (click)="expanBtn()">
+                <button class="filter_btn">
                   {{ filter.key }}
                 </button>
                 <span><i class="fa-solid fa-chevron-down"></i></span>
               </li>
               <hr />
             </ul>
+
             <div id="filter_content" class="filter_data">
+              <!-- ====================================   PRIZE FILTER ======================================= -->
+              <div *ngIf="filter.key == 'price'">
+                <div
+                  *ngFor="let data of getKeyValuePair(filter.value)"
+                  class="p-1"
+                >
+                  {{ data.value.MinPrice }} {{ data.value.MaxPrice }}
+                </div>
+              </div>
+
+              <!-- ====================================   SIZE FILTER ======================================= -->
+
               <div *ngIf="filter.key == 'size'" class="d-flex flex-wrap">
                 <div
                   *ngFor="let data of getKeyValuePair(filter.value)"
                   class="p-1"
                 >
-                  <input
-                    type="button"
-                    name=""
-                    id=""
-                    value="{{ data.value.Title }}"
-                  />
+                  <input type="button" value="{{ data.value.Url }}" />
                 </div>
               </div>
-
+              <!-- ====================================   REMINING FILTERS ======================================= -->
               <div *ngIf="filter.key != 'price' && filter.key != 'size'">
                 <div *ngFor="let data of getKeyValuePair(filter.value)">
-                  <input type="checkbox" name="" id="" />
-                  {{ data.value.Title + " " }}
-                  {{ "(" + data.value.Count + ")" }}
+                  <input
+                    type="checkbox"
+                    value="{{ data.value.Url }}"
+                    (change)="getVal($event, filter.key)"
+                  />
+                  &nbsp;
+                  {{ data.value.Title + "  (" + data.value.Count + ")" }}
                 </div>
               </div>
             </div>

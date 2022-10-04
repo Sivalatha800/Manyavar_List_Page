@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { ListComponent } from './list/list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, ListComponent],
@@ -14,6 +15,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     AppRoutingModule,
     HttpClientModule,
     InfiniteScrollModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
