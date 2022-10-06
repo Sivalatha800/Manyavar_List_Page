@@ -6,10 +6,16 @@ const routes: Routes = [
   {
     path: ':param1',
     component: ListComponent,
+    data: {
+      breadcrumb: '',
+    },
   },
   {
     path: ':param1/:param2',
     component: ListComponent,
+    data: {
+      breadcrumb: '',
+    },
   },
 ];
 

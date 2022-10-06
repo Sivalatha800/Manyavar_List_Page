@@ -1,132 +1,91 @@
-<div class="bg">
-  <!-- ======================= Headdings   ================= -->
-  <div class="main">
-    <div class="title">
-      {{ title }}
+<div class="list">
+  <!-- ============  bread crums =========== -->
+  <div class="breadcrum">
+    Home / {{ listService.parem1 }} / {{ listService.parem2 }}
+  </div>
+  <!-- ============  Title =========== -->
+  <div class="title">
+    {{ listService.productsList[0]?.ItemListName }} <br />
+    <hr />
+  </div>
+  <!-- ============  Total products & Sort options =========== -->
+  <div class="row list_options p-4">
+    <div class="col total-records">
+      <span>{{ listService.totalRecords }}</span> products found
     </div>
-
-    <div class="row m-2">
-      <div class="col-3 total-records">
-        <span>{{ totalRecords }}</span> products found
-      </div>
-
-      <div class="col-3 ms-auto">
-        <select
-          class="form-select"
-          aria-label="Default select example"
-          (change)="shortOptions($event)"
-        >
-          <option value="" disabled selected hidden>Best Seller</option>
-          <option value="popular">Best Seller</option>
-          <option value="price asc">Price Low to High</option>
-          <option value="price desc">Price High to Low</option>
-          <option value="new arrival">New Arrival</option>
-        </select>
-      </div>
+    <div class="col-3 sort_options ms-auto">
+      <span class="sort_text">SORT -</span>
+      <select
+        class="form-select"
+        aria-label="Default select example"
+        (change)="shortOptions($event)"
+      >
+        <option value="" disabled selected hidden>Best Seller</option>
+        <option value="best seller">Best Seller</option>
+        <option value="price asc">Price Low to High</option>
+        <option value="price desc">Price High to Low</option>
+        <option value="new arrival">New Arrival</option>
+      </select>
     </div>
   </div>
-
-  <div class="body_content">
+  <!-- ============  List Body =========== -->
+  <div class="list_body">
     <div class="row">
-      <div class="col-3">
-        <!-- =========================== Filters ================== -->
-        <div class="title-1 pt-3">Filters</div>
-        <div class="left_nav">
-          <div *ngFor="let filter of getKeyValuePair(facets)">
-            <ul class="filter_list">
-              <li class="d-flex">
-                <button class="filter_btn">
-                  {{ filter.key }}
-                </button>
-                <span><i class="fa-solid fa-chevron-down"></i></span>
-              </li>
-              <hr />
-            </ul>
+      <!-- ============  Filters =========== -->
+      <div class="col-3 filters_data">
+        <h4 class="sub_title">Filters</h4>
+        <div>
+          <div *ngFor="let filters of listService.filtersList | keyvalue">
+            <h5>{{ filters.key }}</h5>
 
-            <div id="filter_content" class="filter_data">
-              <!-- ====================================   PRIZE FILTER ======================================= -->
-              <div *ngIf="filter.key == 'price'">
-                <div
-                  *ngFor="let data of getKeyValuePair(filter.value)"
-                  class="p-1"
-                >
-                  {{ data.value.MinPrice }} {{ data.value.MaxPrice }}
-                </div>
-              </div>
+            <!-- ============ PRIZE Filters =========== -->
+            <div *ngIf="filters.key == 'price'"></div>
 
-              <!-- ====================================   SIZE FILTER ======================================= -->
-
-              <div *ngIf="filter.key == 'size'" class="d-flex flex-wrap">
-                <div
-                  *ngFor="let data of getKeyValuePair(filter.value)"
-                  class="p-1"
-                >
-                  <input type="button" value="{{ data.value.Url }}" />
-                </div>
-              </div>
-              <!-- ====================================   REMINING FILTERS ======================================= -->
-              <div *ngIf="filter.key != 'price' && filter.key != 'size'">
-                <div *ngFor="let data of getKeyValuePair(filter.value)">
-                  <input
-                    type="checkbox"
-                    value="{{ data.value.Url }}"
-                    (change)="getVal($event, filter.key)"
-                  />
-                  &nbsp;
-                  {{ data.value.Title + "  (" + data.value.Count + ")" }}
-                </div>
+            <!-- ============ Remainng Filters =========== -->
+            <div *ngIf="filters.key != 'price'">
+              <div *ngFor="let fltr of filters.value">
+                <input
+                  type="checkbox"
+                  [value]="fltr.Url"
+                  [id]="fltr.Url"
+                  (change)="checkBoxFun($event, fltr.DisplayFacetName)"
+                />
+                &nbsp;
+                {{ fltr.Title + "  (" + fltr.Count + ")" }}
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- =========================== List Disply  ================== -->
-      <div class="col-9 p-3">
+      <!-- ============ Products List =========== -->
+      <div class="col-9 list-data">
         <div
-          class="images"
+          class="container"
           infinite-scroll
           [infiniteScrollDistance]="scrollDistance"
           [infiniteScrollThrottle]="throttle"
           (scrolled)="onScrollDown()"
         >
-          <div class="row flex">
-            <div class="col img_title" *ngFor="let list of productsList">
-              <img
-                src="{{ list.ListImagePath + list.Images.split('|')[0] }}"
-                alt=""
-              />
-              <div class="content mt-2">
-                {{ list.ProductTitle }}
-              </div>
-
-              <div class="content">
-                {{ list.CurrencySymbol + " " + list.INRPrice }}
-              </div>
-            </div>
-          </div>
-
-          <!-- ===================== scrolling update list ======================== -->
-          <div *ngIf="updateActive == true">
-            <div class="images">
-              <div class="row flex">
-                <div class="col-4 img_title" *ngFor="let details of updateList">
-                  <div>
-                    <img
-                      src="{{
-                        details.ListImagePath + details.Images.split('|')[0]
-                      }}"
-                      alt=""
-                    />
-                  </div>
-
-                  <div class="content mt-2">
-                    {{ details.ProductTitle }}
-                  </div>
-
-                  <div class="content">
-                    {{ details.CurrencySymbol + " " + details.INRPrice }}
-                  </div>
+          <div class="row">
+            <div
+              class="col-4 pt-2 pb-2"
+              *ngFor="
+                let list of listService.productsList;
+                trackBy: onScrollList
+              "
+            >
+              <div class="card">
+                <img
+                  class="card-img-top"
+                  src="{{ list.ListImagePath + list.Images.split('|')[0] }}"
+                  alt="Card image cap"
+                />
+                <div class="card-body">
+                  <p class="card-title">{{ list.ProductTitle }}</p>
+                  <p class="card-text text-center">
+                    {{ list.CurrencySymbol + " " + list.INRPrice }}
+                  </p>
+                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
                 </div>
               </div>
             </div>

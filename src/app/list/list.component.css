@@ -1,7 +1,9 @@
-.bg {
-
+.list {
     font-family: 'Philosopher', sans-serif;
+}
 
+.breadcrum {
+    text-transform: capitalize;
 }
 
 .title {
@@ -13,49 +15,35 @@
     font-family: 'Pinyon Script', cursive;
     text-transform: capitalize;
     padding-bottom: 10px;
-
 }
 
-.body_content {
-    background: #fdf0e2;
+hr {
+    width: 200px;
+    margin: 0 auto;
 }
 
-
-
-.title-1 {
-    padding-bottom: 10px;
+.total-records {
     color: #af8c3c;
-    padding-left: 10px;
-    font-size: 20px;
+    font-size: 17px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
 }
 
-.images {
-    padding: 20 50px;
-}
-
-.img_title {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.img_title:hover {
-    color: blue;
-    cursor: pointer;
-    background-color: White;
-    /* border: 1px solid black; */
-}
-
-.flex {
+.sort_options {
     display: flex;
-    align-self: center;
-    margin-bottom: 30px;
-    row-gap: 25px;
+    align-items: center;
+
 }
 
-.content {
-    text-align: center;
+.sort_text {
+    width: 200px;
+    text-align: end;
 }
 
+.total-records span {
+    font-weight: 600;
+}
 
 .form-select:focus {
     border-color: inherit;
@@ -65,25 +53,64 @@
     border: none;
 }
 
-.total-records {
-    color: #af8c3c;
-    font-size: 18px;
+.form-select {
+    border: none;
+    cursor: pointer;
+    width: 75%;
+}
+
+.list_body {
+    background: #fdf0e2;
+}
+
+.filters_data,
+.list-data {
+    padding: 20px 30px;
+}
+
+.sub_title {
     text-transform: uppercase;
+    font-weight: 500;
+    color: #af8c3c;
+    font-size: 20px;
     letter-spacing: 1px;
+}
+
+.card-title {
+    font-size: 18px;
+    text-align: center;
 
 }
 
-.total-records span {
-    font-weight: 600;
+p.card-title {
+    width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
+
+.card {
+    padding: 10px;
+    --bs-card-border-color: none;
+    --bs-card-bg: transparent;
+    --bs-card-inner-border-radius: none;
+}
+
+.card:hover {
+    --bs-card-bg: #fff;
+    color: #a07001;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
 
 .left_nav {
     padding: 20px;
-}
-
-.filter_title {
-    text-transform: uppercase;
-    font-weight: 600;
 }
 
 .filter_list {

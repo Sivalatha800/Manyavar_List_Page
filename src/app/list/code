@@ -3,3 +3,149 @@
     {{ data.value.Title }} {{ data.value.Count }}
   </div>
 </div>
+
+<div class="bg">
+  <!-- ======================= Headdings   ================= -->
+  <div class="main">
+    <div class="title">
+      {{ title }}
+    </div>
+
+    <div class="row m-2">
+      <div class="col-3 total-records">
+        <span>{{ totalRecords }}</span> products found
+      </div>
+
+      <div class="col-3 ms-auto">
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          (change)="shortOptions($event)"
+        >
+          <option value="" disabled selected hidden>Best Seller</option>
+          <option value="popular">Best Seller</option>
+          <option value="price asc">Price Low to High</option>
+          <option value="price desc">Price High to Low</option>
+          <option value="new arrival">New Arrival</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="body_content">
+    <div class="row">
+      <div class="col-3">
+        <!-- =========================== Filters ================== -->
+        <div class="title-1 pt-3">Filters</div>
+        <div class="left_nav">
+          <div *ngFor="let filter of getKeyValuePair(facets)">
+            <ul class="filter_list">
+              <li class="d-flex">
+                <button class="filter_btn">
+                  {{ filter.key }}
+                </button>
+                <span><i class="fa-solid fa-chevron-down"></i></span>
+              </li>
+              <hr />
+            </ul>
+
+            <div id="filter_content" class="filter_data">
+              <!-- ====================================   PRIZE FILTER ======================================= -->
+              <div *ngIf="filter.key == 'price'">
+                <div
+                  *ngFor="let data of getKeyValuePair(filter.value)"
+                  class="p-1"
+                >
+                  {{ data.value.MinPrice }} {{ data.value.MaxPrice }}
+                </div>
+              </div>
+
+              <!-- ====================================   SIZE FILTER ======================================= -->
+
+              <div *ngIf="filter.key == 'size'" class="d-flex flex-wrap">
+                <div
+                  *ngFor="let data of getKeyValuePair(filter.value)"
+                  class="p-1"
+                >
+                  <input type="button" value="{{ data.value.Url }}" />
+                </div>
+              </div>
+              <!-- ====================================   REMINING FILTERS ======================================= -->
+              <div *ngIf="filter.key != 'price' && filter.key != 'size'">
+                <div *ngFor="let data of getKeyValuePair(filter.value)">
+                  <input
+                    type="checkbox"
+                    value="{{ data.value.Url }}"
+                    (change)="getVal($event, filter.key)"
+                  />
+                  &nbsp;
+                  {{ data.value.Title + "  (" + data.value.Count + ")" }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =========================== List Disply  ================== -->
+      <div class="col-9 p-3">
+        <div
+          class="images"
+          infinite-scroll
+          [infiniteScrollDistance]="scrollDistance"
+          [infiniteScrollThrottle]="throttle"
+          (scrolled)="onScrollDown()"
+        >
+          <div class="row flex">
+            <div class="col img_title" *ngFor="let list of productsList">
+              <img
+                src="{{ list.ListImagePath + list.Images.split('|')[0] }}"
+                alt=""
+              />
+              <div class="content mt-2">
+                {{ list.ProductTitle }}
+              </div>
+
+              <div class="content">
+                {{ list.CurrencySymbol + " " + list.INRPrice }}
+              </div>
+            </div>
+          </div>
+
+          <!-- ===================== scrolling update list ======================== -->
+          <div *ngIf="updateActive == true">
+            <div class="images">
+              <div class="row flex">
+                <div class="col-4 img_title" *ngFor="let details of updateList">
+                  <div>
+                    <img
+                      src="{{
+                        details.ListImagePath + details.Images.split('|')[0]
+                      }}"
+                      alt=""
+                    />
+                  </div>
+
+                  <div class="content mt-2">
+                    {{ details.ProductTitle }}
+                  </div>
+
+                  <div class="content">
+                    {{ details.CurrencySymbol + " " + details.INRPrice }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+// this.router.navigate( // ['/products'], // { queryParams: { order: 'popular',
+'price-range': 'not-cheap' } } // ); //
+this.router.queryParamMap.subscribe((params) => console.log(params)); <----- for
+Getting params // this.route.navigate([this.listService.parem1,
+this.listService.parem2], { // queryParams: { [keyName]: event.target.value },
+// }); // this.route.navigate(['param1','param2'], { queryParams: { page: }});
