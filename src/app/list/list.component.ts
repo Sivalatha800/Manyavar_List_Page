@@ -8,7 +8,7 @@ import { ListService } from '../list.service';
   styleUrls: ['./list.component.css'],
 })
 export class ListComponent implements OnInit {
-  throttle = 500;
+  throttle = 1000;
   scrollDistance = 1;
   scrollUpDistance = 1;
   constructor(
@@ -22,14 +22,26 @@ export class ListComponent implements OnInit {
       this.listService.parem1 = paramValues['param1'];
       this.listService.parem2 = paramValues['param2'];
     });
+    this.activatedRrouter.queryParams.subscribe((queryParamValues) => {
+      this.listService.queryParamValues = queryParamValues;
+    });
     this.getList();
   }
 
-  //API Call On Load for Page-1
+  //intial call api call with and with out query params
   getList() {
+    console.log(this.listService.queryParamValues);
+    // converting params to string text
+    const filterString = Object.keys(this.listService.queryParamValues)
+      .map((data) => `${data}=${this.listService.queryParamValues[data]}`)
+      .join('|');
+
+    this.listService.parametersObj.f = filterString;
+
     this.listService.parametersObj.pno = this.listService.pageNo;
     this.listService.parametersObj.ps = this.listService.pageSize;
     this.listService.parametersObj.by = 'popular';
+
     this.listService.getApiForAll().subscribe((res) => {
       this.listService.productsList = res.Data.ProductsDetails;
       this.listService.totalRecords = res.Data.TotalRecords;
@@ -51,24 +63,17 @@ export class ListComponent implements OnInit {
   }
 
   // trackBy function for display items for updated list on Scroll
-  onScrollList(product: any) {
-    return product.ProductTitle;
+  onScrollList(index: any, product: any) {
+    return index;
   }
 
   //Sort options of get Api
-  shortOptions(event: any) {
-    if (event.target.value == 'price asc') {
-      this.listService.parametersObj.by = 'price';
-      this.listService.parametersObj.dir = 'asc';
-    } else if (event.target.value == 'price desc') {
-      this.listService.parametersObj.by = 'price';
-      this.listService.parametersObj.dir = 'desc';
-    } else if (event.target.value == 'new arrival') {
-      this.listService.parametersObj.by = 'new arrival';
-      this.listService.parametersObj.dir = '';
-    } else {
-      this.listService.parametersObj.by = 'popular';
-      this.listService.parametersObj.dir = '';
+  sortOptions(event: any) {
+    for (let sort of this.listService.sortOptions) {
+      if (event.target.value == sort.value) {
+        this.listService.parametersObj.by = sort.by;
+        this.listService.parametersObj.dir = sort.dir;
+      }
     }
     this.listService.getApiForAll().subscribe((res) => {
       this.listService.productsList = res.Data.ProductsDetails;
@@ -79,27 +84,19 @@ export class ListComponent implements OnInit {
   checkBoxData: any[] = [];
   //get Filter Value
   checkBoxFun(event: any, keyName: any) {
-    const selectedList = {
-      displayName: keyName,
-      urlName: event.target.value,
-      isChecked: event.target.checked,
-    };
-    if (this.checkBoxData.length == 0) {
-      this.checkBoxData.push(selectedList);
-    } else {
-      if (event.target.checked == false) {
-        this.checkBoxData.forEach((check, index) => {
-          if (check.urlName == event.target.value) {
-            this.checkBoxData.splice(index, 1);
-          }
-        });
+    if (event.target.checked == true) {
+      if (this.checkBoxData.length == 0) {
+        const selectData = {
+          [keyName]: [event.target.value],
+        };
+        this.checkBoxData.push(selectData);
       } else {
-        this.checkBoxData.push(selectedList);
+        for (let data of this.checkBoxData) {
+          console.log(data);
+        }
       }
     }
-    //pass parameters to url
-    this.passParameters();
-    //get api Call for filters
+    console.log(this.checkBoxData);
   }
 
   //passing parameters to url
@@ -115,6 +112,9 @@ export class ListComponent implements OnInit {
         },
       });
     } else {
+      this.checkBoxData.map((data) => {
+        console.log(data);
+      });
     }
   }
 }

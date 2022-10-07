@@ -18,13 +18,15 @@
       <select
         class="form-select"
         aria-label="Default select example"
-        (change)="shortOptions($event)"
+        (change)="sortOptions($event)"
       >
         <option value="" disabled selected hidden>Best Seller</option>
-        <option value="best seller">Best Seller</option>
-        <option value="price asc">Price Low to High</option>
-        <option value="price desc">Price High to Low</option>
-        <option value="new arrival">New Arrival</option>
+        <option
+          [value]="selectData.value"
+          *ngFor="let selectData of listService.sortOptions"
+        >
+          {{ selectData.name }}
+        </option>
       </select>
     </div>
   </div>
@@ -57,6 +59,7 @@
           </div>
         </div>
       </div>
+
       <!-- ============ Products List =========== -->
       <div class="col-9 list-data">
         <div
@@ -71,7 +74,8 @@
               class="col-4 pt-2 pb-2"
               *ngFor="
                 let list of listService.productsList;
-                trackBy: onScrollList
+                trackBy: onScrollList;
+                let i = index
               "
             >
               <div class="card">

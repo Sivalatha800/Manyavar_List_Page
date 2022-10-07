@@ -8,7 +8,7 @@ import { listURL } from './list/apiUrl';
 })
 export class ListService {
   token: string =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI1ODE0NjE1Ni01MzUyLTQwMzUtYWQxMS1kNmE1ZmEyMjBmOTgiLCJhaWQiOiJDQUQ1MDU5MC1BMTg5LTQxNEYtQTJGNS0xMDMzOUQxRjlGOTciLCJkaWQiOiI0NDQ5NkIwMy0zNjQ3LTQ5MEMtQjJGMC0yRTE1OUIyN0QyNzgiLCJuYmYiOjE2NjUwMzExMTEsImV4cCI6MTY2NTExNzUxMSwiaWF0IjoxNjY1MDMxMTExfQ.v1RTwMDP47NcIGN2QfxoQptEpmJJGRPTo_oktVDZ4Gs';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiI1MWMwY2Q0MC03ZjAxLTRlOTAtYmQzYS03MWE4YjQ3MGFmNzgiLCJhaWQiOiJDQUQ1MDU5MC1BMTg5LTQxNEYtQTJGNS0xMDMzOUQxRjlGOTciLCJkaWQiOiI0NDQ5NkIwMy0zNjQ3LTQ5MEMtQjJGMC0yRTE1OUIyN0QyNzgiLCJuYmYiOjE2NjUxMjA1MDIsImV4cCI6MTY2NTIwNjkwMiwiaWF0IjoxNjY1MTIwNTAyfQ.YA1dsB8_8Wp72G8Qtkinn6zruT_tLRTVpeaSMb81X-0';
 
   constructor(private http: HttpClient) {}
 
@@ -19,6 +19,7 @@ export class ListService {
   //Veriables Declaration
   parem1: any;
   parem2: any;
+  queryParamValues: any;
   pageNo: number = 1;
   pageSize = 12;
   productsList: any[] = [];
@@ -41,6 +42,19 @@ export class ListService {
     nbtid: '',
     cid: 1,
   };
+
+  //sort Options Array
+  sortOptions = [
+    { name: 'Best Seller', value: 'popular', by: 'popular', dir: '' },
+    { name: 'Price Low to High', value: 'price asc', by: 'price', dir: 'asc' },
+    {
+      name: 'Price High to Low',
+      value: 'price desc',
+      by: 'price',
+      dir: 'desc',
+    },
+    { name: 'New Arrival', value: 'new arrival', by: 'new arrival', dir: '' },
+  ];
 
   //GET API For All Functions
   getApiForAll() {

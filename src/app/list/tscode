@@ -1,0 +1,93 @@
+ checkBoxFun(event: any, keyName: any) {
+    const selectedList = {
+      displayName: keyName,
+      urlName: event.target.value,
+      isChecked: event.target.checked,
+    };
+    if (this.checkBoxData.length == 0) {
+      this.checkBoxData.push(selectedList);
+    } else {
+      if (event.target.checked == false) {
+        this.checkBoxData.forEach((check, index) => {
+          if (check.urlName == event.target.value) {
+            this.checkBoxData.splice(index, 1);
+          }
+        });
+      } else {
+        this.checkBoxData.push(selectedList);
+      }
+    }
+    //pass parameters to url
+    this.passParameters();
+    //get api Call for filters
+  }
+
+
+
+
+  checkBoxFun(event: any, keyName: any) {
+    if (this.checkBoxData.length == 0) {
+      const selectedList = {
+        displayName: keyName,
+        urlName: event.target.value,
+        isChecked: event.target.checked,
+      };
+      this.checkBoxData.push(selectedList);
+    } else {
+      if (event.target.checked == true) {
+        this.checkBoxData.forEach((check) => {
+          if (check.displayName == keyName) {
+            console.log(check);
+          }
+        });
+      }
+      if (event.target.checked == false) {
+        this.checkBoxData.forEach((check, index) => {
+          if (check.urlName == event.target.value) {
+            this.checkBoxData.splice(index, 1);
+          }
+        });
+      }
+    }
+    console.log(this.checkBoxData);
+  }
+
+
+
+  checkBoxFun(event: any, keyName: any) {
+    if (event.target.checked == true) {
+      debugger;
+      if (this.checkBoxData.length == 0) {
+        const selectData = {
+          [keyName]: event.target.value,
+        };
+        this.checkBoxData.push(selectData);
+      } else {
+        for (let data of this.checkBoxData) {
+          Object.keys(data).map((key) => {
+            if (key == keyName) {
+              console.log(Object);
+            } else {
+              const selectData = {
+                [keyName]: event.target.value,
+              };
+              this.checkBoxData.push(selectData);
+            }
+          });
+        }
+        console.log(this.checkBoxData);
+      }
+    }
+    console.log(this.checkBoxData);
+  }
+
+
+  if (key == keyName) {
+    data[key].push(event.target.value);
+    console.log(data[key]);
+  } else {
+    const selectData = {
+      [keyName]: event.target.value,
+    };
+    this.checkBoxData.push(selectData);
+  }
