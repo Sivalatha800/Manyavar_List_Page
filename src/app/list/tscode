@@ -22,7 +22,16 @@
     //get api Call for filters
   }
 
-
+  checkBoxFun(event: any, keyName: any) {
+    let { checked, value } = event.target;
+    if (checked) {
+      this.checkedItems.map();
+    } else {
+      let index = this.checkedItems.indexOf(value);
+      if (index !== -1) this.checkedItems.splice(index, 1);
+    }
+    console.log(this.checkedItems);
+  }
 
 
   checkBoxFun(event: any, keyName: any) {
@@ -91,3 +100,47 @@
     };
     this.checkBoxData.push(selectData);
   }
+
+  Object.keys(data).forEach((key) => {
+    if (key !== keyName) {
+      subData = { [keyName]: [event.target.value] };
+    } else {
+      data[key].push(event.target.value);
+    }
+  });
+
+  [checked]="isCheck ? fltr.IsEnable : null"
+  isCheck: boolean = false;
+  this.isCheck = true;
+
+  if (event.target.checked == true) {
+    let url = {
+      [keyName]: event.target.value,
+    };
+    this.route.navigate([this.listService.parem1, this.listService.parem2], {
+      queryParams: url,
+    });
+    this.getParams();
+    setTimeout(() => {
+      this.getList();
+    }, 300);
+  }
+
+
+  let checkedVal = Object.keys(this.checkBoxData);
+    checkedVal = checkedVal.filter((key) => this.checkBoxData[key] == true);
+    var checkedJoin = checkedVal.join(':');
+
+    if (checkedJoin != '') {
+      url = {
+        [keyName]: checkedJoin,
+      };
+    }
+    this.route.navigate([this.listService.parem1, this.listService.parem2], {
+      queryParams: url,
+    });
+    this.getParams();
+    setTimeout(() => {
+      this.getList();
+    }, 300);
+  

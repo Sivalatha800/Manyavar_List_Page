@@ -18,6 +18,11 @@ export class ListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getParams();
+    this.getList();
+  }
+
+  getParams() {
     this.activatedRrouter.params.subscribe((paramValues: Params) => {
       this.listService.parem1 = paramValues['param1'];
       this.listService.parem2 = paramValues['param2'];
@@ -25,12 +30,11 @@ export class ListComponent implements OnInit {
     this.activatedRrouter.queryParams.subscribe((queryParamValues) => {
       this.listService.queryParamValues = queryParamValues;
     });
-    this.getList();
   }
 
   //intial call api call with and with out query params
   getList() {
-    console.log(this.listService.queryParamValues);
+    // console.log(this.listService.queryParamValues);
     // converting params to string text
     const filterString = Object.keys(this.listService.queryParamValues)
       .map((data) => `${data}=${this.listService.queryParamValues[data]}`)
@@ -81,40 +85,43 @@ export class ListComponent implements OnInit {
     });
   }
 
-  checkBoxData: any[] = [];
-  //get Filter Value
+  checkBoxData: any = [];
+  checkBoxData2: any = [];
   checkBoxFun(event: any, keyName: any) {
-    if (event.target.checked == true) {
-      if (this.checkBoxData.length == 0) {
-        const selectData = {
-          [keyName]: [event.target.value],
-        };
-        this.checkBoxData.push(selectData);
+    let { checked, value } = event.target;
+    let url: any;
+    if (checked == true) {
+      if (this.checkBoxData2.length == 0) {
+        this.checkBoxData2.push({ [keyName]: value });
       } else {
-        for (let data of this.checkBoxData) {
-          console.log(data);
-        }
+        console.log('Multy Select');
       }
-    }
-    console.log(this.checkBoxData);
-  }
-
-  //passing parameters to url
-  passParameters() {
-    if (this.checkBoxData.length == 0) {
-      this.route.navigate([this.listService.parem1, this.listService.parem2], {
-        queryParams: {},
-      });
-    } else if (this.checkBoxData.length == 1) {
-      this.route.navigate([this.listService.parem1, this.listService.parem2], {
-        queryParams: {
-          [this.checkBoxData[0].displayName]: this.checkBoxData[0].urlName,
-        },
-      });
     } else {
-      this.checkBoxData.map((data) => {
-        console.log(data);
+      this.checkBoxData2.forEach((check: any, index: any) => {
+        let val = Object.keys(check);
+        val = val.filter((key) => {
+          if (check[key] == value) {
+          }
+        });
       });
     }
+
+    //passing single catagery
+    let checkedVal = Object.keys(this.checkBoxData);
+    checkedVal = checkedVal.filter((key) => this.checkBoxData[key] == true);
+    var checkedJoin = checkedVal.join(':');
+
+    if (checkedJoin != '') {
+      url = {
+        [keyName]: checkedJoin,
+      };
+    }
+    this.route.navigate([this.listService.parem1, this.listService.parem2], {
+      queryParams: url,
+    });
+    this.getParams();
+    setTimeout(() => {
+      this.getList();
+    }, 300);
   }
 }

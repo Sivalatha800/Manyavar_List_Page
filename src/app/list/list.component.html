@@ -47,6 +47,7 @@
             <div *ngIf="filters.key != 'price'">
               <div *ngFor="let fltr of filters.value">
                 <input
+                  [(ngModel)]="checkBoxData[fltr.Url]"
                   type="checkbox"
                   [value]="fltr.Url"
                   [id]="fltr.Url"
