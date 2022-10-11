@@ -36,6 +36,13 @@
       <!-- ============  Filters =========== -->
       <div class="col-3 filters_data">
         <h4 class="sub_title">Filters</h4>
+        <a
+          [routerLink]=""
+          *ngIf="showClear == true"
+          (click)="onClearFilters()"
+          class="clear_data"
+          >Clear All</a
+        >
         <div>
           <div *ngFor="let filters of listService.filtersList | keyvalue">
             <h5>{{ filters.key }}</h5>
@@ -45,13 +52,13 @@
 
             <!-- ============ Remainng Filters =========== -->
             <div *ngIf="filters.key != 'price'">
-              <div *ngFor="let fltr of filters.value">
+              <div *ngFor="let fltr of filters.value; let i = index">
                 <input
                   [(ngModel)]="checkBoxData[fltr.Url]"
                   type="checkbox"
                   [value]="fltr.Url"
                   [id]="fltr.Url"
-                  (change)="checkBoxFun($event, fltr.DisplayFacetName)"
+                  (change)="checkBoxFun($event, filters.key)"
                 />
                 &nbsp;
                 {{ fltr.Title + "  (" + fltr.Count + ")" }}

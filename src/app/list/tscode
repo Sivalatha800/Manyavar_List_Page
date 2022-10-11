@@ -144,3 +144,53 @@
       this.getList();
     }, 300);
   
+
+    if (checked == true) {
+      if (this.checkBoxData2.length == 0) {
+        this.checkBoxData2.push({ [keyName]: value });
+      } else {
+        console.log('Multy Select');
+      }
+    } else {
+      this.checkBoxData2.forEach((check: any, index: any) => {
+        let val = Object.keys(check);
+        val = val.filter((key) => {
+          if (check[key] == value) {
+          }
+        });
+      });
+    }
+
+
+    onCheck(check: any, value: number) {
+      let qValue = value;
+      let array = [];
+      array.push(qValue);
+      this.filter.set(check, array);
+      let Obj: { [index: string]: string } = Array.from(
+        this.filter
+      ).reduce(
+  
+        (Obj, [key, value]) => Object.assign(Obj, { [key]: value.join(':') }),
+  
+        {}
+  
+      );
+      let queryParams = Obj
+      this.route.navigate([], { queryParams });
+      this.str = '';
+      for (let key in Obj) {
+        this.str = this.str + `${key}=${Obj[key]}|`
+      }
+      this.str = this.str.substring(0, this.str.length - 1);
+      this.Filterproducts(1, this.str);
+      // this.itemkyes = Object.keys( this.ResponceData);
+  
+      // this.itemkyes = this.itemkyes.filter(url =>this.fitFiltersList[url] == true);
+  
+      // var str = itemkeys.join(":");
+      if(this.param3!==undefined){
+  
+      }
+    }
+  
