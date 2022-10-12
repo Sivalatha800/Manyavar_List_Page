@@ -95,22 +95,43 @@ export class ListComponent implements OnInit {
     });
   }
 
+  checkBoxObj: any = [];
+
   //checkbox functionality
   checkBoxFun(event: any, keyName: any) {
+    const { checked, value } = event.target;
+
+    if (checked == true) {
+      if (Object.keys(this.checkBoxObj).length == 0) {
+        const selectedList = {
+          [keyName]: value,
+        };
+        this.checkBoxObj = selectedList;
+      } else {
+        debugger;
+        if (Object.keys(this.checkBoxObj) == keyName) {
+          console.log('Key match');
+        } else {
+          this.checkBoxObj = { ...this.checkBoxObj, [keyName]: value };
+        }
+      }
+    } else {
+      console.log('unchecked');
+    }
+
+    console.log(this.checkBoxObj);
+
+    //passing single catagery
     this.showClear = true;
     let url: any;
-    //passing single catagery
+
     let checkedVal = Object.keys(this.checkBoxData);
-
     checkedVal = checkedVal.filter((key) => this.checkBoxData[key] == true);
-    console.log(checkedVal);
     var checkedJoin = checkedVal.join(':');
-
     if (checkedJoin != '') {
       url = {
         [keyName]: checkedJoin,
       };
-
       this.route.navigate([this.listService.parem1, this.listService.parem2], {
         queryParams: url,
         queryParamsHandling: 'merge',

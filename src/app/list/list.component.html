@@ -45,13 +45,15 @@
         >
         <div>
           <div *ngFor="let filters of listService.filtersList | keyvalue">
-            <h5>{{ filters.key }}</h5>
-
+            <div>
+              <h5 class="filter_title">{{ filters.key }}</h5>
+            </div>
+            <hr />
             <!-- ============ PRIZE Filters =========== -->
             <div *ngIf="filters.key == 'price'"></div>
 
             <!-- ============ Remainng Filters =========== -->
-            <div *ngIf="filters.key != 'price'">
+            <div *ngIf="filters.key != 'price'" class="mb-4">
               <div *ngFor="let fltr of filters.value; let i = index">
                 <input
                   [(ngModel)]="checkBoxData[fltr.Url]"

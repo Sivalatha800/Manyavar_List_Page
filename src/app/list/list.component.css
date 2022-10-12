@@ -17,7 +17,7 @@
     padding-bottom: 10px;
 }
 
-hr {
+.title hr {
     width: 200px;
     margin: 0 auto;
 }
@@ -108,6 +108,10 @@ p.card-title {
     cursor: pointer;
 }
 
+.filter_title {
+    text-transform: uppercase;
+    font-size: 18px;
+}
 
 
 
