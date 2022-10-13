@@ -14,6 +14,8 @@ export class ListComponent implements OnInit {
   filterString: any;
   checkBoxData: any = [];
   showClear: boolean = false;
+  returnMessage: any;
+
   constructor(
     public activatedRrouter: ActivatedRoute,
     public listService: ListService,
@@ -60,6 +62,8 @@ export class ListComponent implements OnInit {
       this.listService.productsList = res.Data.ProductsDetails;
       this.listService.totalRecords = res.Data.TotalRecords;
       this.listService.filtersList = res.Data.Facets;
+      this.returnMessage = res.ReturnMessage;
+      console.log(this.returnMessage);
     });
   }
 
@@ -108,39 +112,32 @@ export class ListComponent implements OnInit {
         };
         this.checkBoxObj = selectedList;
       } else {
-        debugger;
-        if (Object.keys(this.checkBoxObj) == keyName) {
-          console.log('Key match');
+        if (this.checkBoxObj.hasOwnProperty(keyName) == true) {
+          Object.keys(this.checkBoxObj).some((key) => {
+            if (key === keyName) {
+              this.checkBoxObj[key] = this.checkBoxObj[key] + ':' + value;
+            }
+          });
         } else {
           this.checkBoxObj = { ...this.checkBoxObj, [keyName]: value };
         }
       }
     } else {
-      console.log('unchecked');
-    }
-
-    console.log(this.checkBoxObj);
-
-    //passing single catagery
-    this.showClear = true;
-    let url: any;
-
-    let checkedVal = Object.keys(this.checkBoxData);
-    checkedVal = checkedVal.filter((key) => this.checkBoxData[key] == true);
-    var checkedJoin = checkedVal.join(':');
-    if (checkedJoin != '') {
-      url = {
-        [keyName]: checkedJoin,
-      };
-      this.route.navigate([this.listService.parem1, this.listService.parem2], {
-        queryParams: url,
-        queryParamsHandling: 'merge',
-      });
-    } else {
-      this.route.navigate([this.listService.parem1, this.listService.parem2], {
-        queryParams: url,
+      Object.keys(this.checkBoxObj).some((key) => {
+        if (key === keyName) {
+          this.checkBoxObj[key] = this.checkBoxObj[key]
+            .replace(value, '')
+            .replace(':', '');
+        }
+        if (this.checkBoxObj[key] == '') {
+          delete this.checkBoxObj[key];
+        }
       });
     }
+
+    this.route.navigate([this.listService.parem1, this.listService.parem2], {
+      queryParams: this.checkBoxObj,
+    });
 
     this.getParams();
     setTimeout(() => {

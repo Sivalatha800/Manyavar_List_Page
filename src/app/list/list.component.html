@@ -4,108 +4,117 @@
     Home / {{ listService.parem1 }} / {{ listService.parem2 }}
   </div>
   <!-- ============  Title =========== -->
-  <div class="title">
-    {{ listService.productsList[0]?.ItemListName }} <br />
-    <hr />
-  </div>
-  <!-- ============  Total products & Sort options =========== -->
-  <div class="row list_options p-4">
-    <div class="col total-records">
-      <span>{{ listService.totalRecords }}</span> products found
+  <div *ngIf="returnMessage != ''">
+    <div class="title">
+      {{ listService.productsList[0]?.ItemListName }} <br />
+      <hr />
     </div>
-    <div class="col-3 sort_options ms-auto">
-      <span class="sort_text">SORT -</span>
-      <select
-        class="form-select"
-        aria-label="Default select example"
-        (change)="sortOptions($event)"
-      >
-        <option value="" disabled selected hidden>Best Seller</option>
-        <option
-          [value]="selectData.value"
-          *ngFor="let selectData of listService.sortOptions"
+    <!-- ============  Total products & Sort options =========== -->
+    <div class="row list_options p-4">
+      <div class="col total-records">
+        <span>{{ listService.totalRecords }}</span> products found
+      </div>
+      <div class="col-3 sort_options ms-auto">
+        <span class="sort_text">SORT -</span>
+        <select
+          class="form-select"
+          aria-label="Default select example"
+          (change)="sortOptions($event)"
         >
-          {{ selectData.name }}
-        </option>
-      </select>
+          <option value="" disabled selected hidden>Best Seller</option>
+          <option
+            [value]="selectData.value"
+            *ngFor="let selectData of listService.sortOptions"
+          >
+            {{ selectData.name }}
+          </option>
+        </select>
+      </div>
     </div>
-  </div>
-  <!-- ============  List Body =========== -->
-  <div class="list_body">
-    <div class="row">
-      <!-- ============  Filters =========== -->
-      <div class="col-3 filters_data">
-        <h4 class="sub_title">Filters</h4>
-        <a
-          [routerLink]=""
-          *ngIf="showClear == true"
-          (click)="onClearFilters()"
-          class="clear_data"
-          >Clear All</a
-        >
-        <div>
-          <div *ngFor="let filters of listService.filtersList | keyvalue">
-            <div>
-              <h5 class="filter_title">{{ filters.key }}</h5>
-            </div>
-            <hr />
-            <!-- ============ PRIZE Filters =========== -->
-            <div *ngIf="filters.key == 'price'"></div>
+    <!-- ============  List Body =========== -->
+    <div class="list_body">
+      <div class="row">
+        <!-- ============  Filters =========== -->
+        <div class="col-3 filters_data">
+          <h4 class="sub_title">Filters</h4>
+          <a
+            [routerLink]=""
+            *ngIf="showClear == true"
+            (click)="onClearFilters()"
+            class="clear_data"
+            >Clear All</a
+          >
+          <div>
+            <div *ngFor="let filters of listService.filtersList | keyvalue">
+              <div>
+                <h5 class="filter_title">{{ filters.key }}</h5>
+              </div>
+              <hr />
+              <!-- ============ PRIZE Filters =========== -->
+              <div *ngIf="filters.key == 'price'"></div>
 
-            <!-- ============ Remainng Filters =========== -->
-            <div *ngIf="filters.key != 'price'" class="mb-4">
-              <div *ngFor="let fltr of filters.value; let i = index">
-                <input
-                  [(ngModel)]="checkBoxData[fltr.Url]"
-                  type="checkbox"
-                  [value]="fltr.Url"
-                  [id]="fltr.Url"
-                  (change)="checkBoxFun($event, filters.key)"
-                />
-                &nbsp;
-                {{ fltr.Title + "  (" + fltr.Count + ")" }}
+              <!-- ============ Remainng Filters =========== -->
+              <div *ngIf="filters.key != 'price'" class="mb-4">
+                <div *ngFor="let fltr of filters.value; let i = index">
+                  <input
+                    [(ngModel)]="checkBoxData[fltr.Url]"
+                    type="checkbox"
+                    [value]="fltr.Url"
+                    [id]="fltr.Url"
+                    (change)="checkBoxFun($event, filters.key)"
+                  />
+                  &nbsp;
+                  {{ fltr.Title + "  (" + fltr.Count + ")" }}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- ============ Products List =========== -->
-      <div class="col-9 list-data">
-        <div
-          class="container"
-          infinite-scroll
-          [infiniteScrollDistance]="scrollDistance"
-          [infiniteScrollThrottle]="throttle"
-          (scrolled)="onScrollDown()"
-        >
-          <div class="row">
-            <div
-              class="col-4 pt-2 pb-2"
-              *ngFor="
-                let list of listService.productsList;
-                trackBy: onScrollList;
-                let i = index
-              "
-            >
-              <div class="card">
-                <img
-                  class="card-img-top"
-                  src="{{ list.ListImagePath + list.Images.split('|')[0] }}"
-                  alt="Card image cap"
-                />
-                <div class="card-body">
-                  <p class="card-title">{{ list.ProductTitle }}</p>
-                  <p class="card-text text-center">
-                    {{ list.CurrencySymbol + " " + list.INRPrice }}
-                  </p>
-                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+        <!-- ============ Products List =========== -->
+        <div class="col-9 list-data">
+          <div
+            class="container"
+            infinite-scroll
+            [infiniteScrollDistance]="scrollDistance"
+            [infiniteScrollThrottle]="throttle"
+            (scrolled)="onScrollDown()"
+          >
+            <div class="row">
+              <div
+                class="col-4 pt-2 pb-2"
+                *ngFor="
+                  let list of listService.productsList;
+                  trackBy: onScrollList;
+                  let i = index
+                "
+              >
+                <div class="card">
+                  <img
+                    class="card-img-top"
+                    src="{{ list.ListImagePath + list.Images.split('|')[0] }}"
+                    alt="Card image cap"
+                  />
+                  <div class="card-body">
+                    <p class="card-title">{{ list.ProductTitle }}</p>
+                    <p class="card-text text-center">
+                      {{ list.CurrencySymbol + " " + list.INRPrice }}
+                    </p>
+                    <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div *ngIf="returnMessage == ''">
+    <div class="text-center mt-5 mb-5">
+      <h2>The page you are looking for does not exists.</h2>
+      <p>Please check the spelling or try searching something else</p>
     </div>
   </div>
 </div>
