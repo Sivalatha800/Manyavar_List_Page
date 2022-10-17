@@ -17,7 +17,6 @@ export class ListComponent implements OnInit {
   scrollDistance = 1;
   scrollUpDistance = 1;
   filterString: any;
-  checkBoxData: any = [];
   showClear: boolean = false;
   returnMessage: any;
   price: any = {};
@@ -25,6 +24,7 @@ export class ListComponent implements OnInit {
   checkBoxObj: any = [];
   minValue!: any;
   maxValue!: any;
+  checkBoxData: any = [];
 
   constructor(
     public activatedRrouter: ActivatedRoute,
@@ -141,10 +141,17 @@ export class ListComponent implements OnInit {
 
     let priceValue =
       '[' + changeContext.value + 'to' + changeContext.highValue + ']';
-    const selectedPrice = {
-      [priceKey]: priceValue,
-    };
-    this.checkBoxObj = selectedPrice;
+
+    if (Object.keys(this.checkBoxObj).length === 0) {
+      const selectedPrice = {
+        [priceKey]: priceValue,
+      };
+
+      this.checkBoxObj = selectedPrice;
+    } else {
+      this.checkBoxObj = { ...this.checkBoxObj, [priceKey]: priceValue };
+    }
+
     this.route.navigate([this.listService.parem1, this.listService.parem2], {
       queryParams: this.checkBoxObj,
     });
@@ -201,6 +208,7 @@ export class ListComponent implements OnInit {
 
   //clear all filters
   onClearFilters() {
+    this.checkBoxObj = [];
     this.checkBoxData = [];
     this.showClear = false;
     this.route.navigate([this.listService.parem1, this.listService.parem2]);
