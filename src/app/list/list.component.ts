@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ListService } from '../list.service';
-import {
-  ChangeContext,
-  Options,
-  PointerType,
-} from '@angular-slider/ngx-slider';
+import { ChangeContext, Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-list',
@@ -74,7 +70,9 @@ export class ListComponent implements OnInit {
           this.listService.totalRecords = resData.Data.TotalRecords;
           this.listService.filtersList = resData.Data.Facets;
           this.returnMessage = resData.ReturnMessage;
-          this.minMaxValues(resData.Data.Facets.price[0]);
+          if (resData.Data.Facets.price) {
+            this.minMaxValues(resData.Data.Facets.price[0]);
+          }
         }
       }
     });
@@ -106,11 +104,21 @@ export class ListComponent implements OnInit {
       this.listService.productsList.length !== this.listService.totalRecords
     ) {
       this.listService.parametersObj.pno = this.listService.pageNo + 1;
-      this.listService.getApiForAll().subscribe((res) => {
-        this.listService.productsList = this.listService.productsList.concat(
-          res.Data.ProductsDetails
-        );
-        this.listService.pageNo = this.listService.parametersObj.pno;
+      this.listService.getApiForAll().subscribe((resData) => {
+        if (resData !== undefined && resData !== null && resData !== '') {
+          if (
+            resData.Data !== undefined &&
+            resData.Data !== null &&
+            resData.Data !== '' &&
+            resData.ReturnCode === 0
+          ) {
+            this.listService.productsList =
+              this.listService.productsList.concat(
+                resData.Data.ProductsDetails
+              );
+            this.listService.pageNo = this.listService.parametersObj.pno;
+          }
+        }
       });
     }
   }
@@ -128,10 +136,19 @@ export class ListComponent implements OnInit {
         this.listService.parametersObj.dir = sort.dir;
       }
     }
-    this.listService.getApiForAll().subscribe((res) => {
-      this.listService.productsList = res.Data.ProductsDetails;
-      this.listService.totalRecords = res.Data.TotalRecords;
+    this.getApiCall();
+  }
+
+  //navigate and api call
+  navigateWithApi() {
+    this.route.navigate([this.listService.parem1, this.listService.parem2], {
+      queryParams: this.checkBoxObj,
     });
+
+    this.getParams();
+    setTimeout(() => {
+      this.getList();
+    }, 300);
   }
 
   //price functionality
@@ -151,15 +168,7 @@ export class ListComponent implements OnInit {
     } else {
       this.checkBoxObj = { ...this.checkBoxObj, [priceKey]: priceValue };
     }
-
-    this.route.navigate([this.listService.parem1, this.listService.parem2], {
-      queryParams: this.checkBoxObj,
-    });
-
-    this.getParams();
-    setTimeout(() => {
-      this.getList();
-    }, 300);
+    this.navigateWithApi();
   }
 
   //checkbox functionality
@@ -196,14 +205,7 @@ export class ListComponent implements OnInit {
       });
     }
 
-    this.route.navigate([this.listService.parem1, this.listService.parem2], {
-      queryParams: this.checkBoxObj,
-    });
-
-    this.getParams();
-    setTimeout(() => {
-      this.getList();
-    }, 300);
+    this.navigateWithApi();
   }
 
   //clear all filters
