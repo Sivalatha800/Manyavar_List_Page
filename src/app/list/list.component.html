@@ -51,7 +51,14 @@
               </div>
               <hr />
               <!-- ============ PRIZE Filters =========== -->
-              <div *ngIf="filters.key == 'price'"></div>
+              <div *ngIf="filters.key == 'price'" class="mb-4">
+                <ngx-slider
+                  [(value)]="minValue"
+                  [(highValue)]="maxValue"
+                  [options]="options"
+                  (userChange)="onPriceChange($event, filters.key)"
+                ></ngx-slider>
+              </div>
 
               <!-- ============ Remainng Filters =========== -->
               <div *ngIf="filters.key != 'price'" class="mb-4">

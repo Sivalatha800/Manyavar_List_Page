@@ -7,6 +7,7 @@ import { ListComponent } from './list/list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FormsModule } from '@angular/forms';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 @NgModule({
   declarations: [AppComponent, ListComponent],
@@ -16,6 +17,7 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     InfiniteScrollModule,
     FormsModule,
+    NgxSliderModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
